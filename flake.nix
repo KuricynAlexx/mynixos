@@ -28,26 +28,7 @@
             home-manager.useUserPackages = true;
             
             # Настройки Home Manager для вашего пользователя
-            home-manager.users.alexthesnore = { pkgs, ... }: {
-              home.username = "alexthesnore";
-              home.homeDirectory = "/home/alexthesnore";
-              
-              # Пакеты только для конкретного пользователя
-              home.packages = with pkgs; [
-                git
-                htop
-              ];
-
-              # Включаем и настраиваем Vim через Home Manager
-              programs.vim = {
-                enable = true;
-                defaultEditor = true;
-                settings = { ignorecase = true; };
-              };
-
-              # Версия Home Manager (оставьте без изменений при обновлениях)
-              home.stateVersion = "24.11"; 
-            };
+            home-manager.users.alexthesnore = import ./home.nix;
           }
         ];
       };

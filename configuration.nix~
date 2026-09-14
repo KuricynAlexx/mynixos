@@ -9,8 +9,10 @@
     [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./modules/system-pkgs.nix
-    ./modules/users.nix
+    ./modules/periphery/general.nix
+    ./modules/periphery/desktop.nix
     ./modules/environments/kde-plasma.nix
+    ./modules/user-pkgs.nix
     ];
 
   # --- THIS HOST SYSTEM SETTING --- #
