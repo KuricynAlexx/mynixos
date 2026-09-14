@@ -5,6 +5,12 @@
     ./modules/periphery/desktop.nix
     ];
 
+  # gc for users programs
+  nix.gc = {
+    automatic = true;
+    frequency = "weekly";
+    options = "--delete-generations +5";
+  };
   # Информация о пользователе и его домашней директории
   home.username = "alexthesnore";
   home.homeDirectory = "/home/alexthesnore";
