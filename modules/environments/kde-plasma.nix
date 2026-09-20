@@ -6,11 +6,4 @@
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = lib.mkDefault true;
   services.desktopManager.plasma6.enable = lib.mkDefault true;
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
-
 }
