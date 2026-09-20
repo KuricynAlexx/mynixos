@@ -1,15 +1,15 @@
 { config, lib, pkgs, ... }: {
-  imports =
-    [ # Include the results of the hardware scan.
-    ./periphery/general.nix
-    ];
+  # imports =
+  #  [ # Include the results of the hardware scan.
+  #  ];
+
+  # Default for system:
+  # Use the systemd-boot EFI boot loader.
+  boot.loader.systemd-boot.enable = lib.mkDefault true;
+  boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;
 
   # for home-management and flake
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
 
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -27,10 +27,25 @@
     LC_TELEPHONE = "ru_RU.UTF-8";
     LC_TIME = "ru_RU.UTF-8";
   };
+  services.xserver.xkb = {
+    layout = "us,ru";
+    variant = "";
+    options = "grp:win_space_toggle"; # Переключение по Alt + Shift
+  };
 
   # --- PROGRAMS --- #
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  # List packages installed in system profile.
+  # You can use https://search.nixos.org/ to find more packages (and options).
+  environment.systemPackages = with pkgs; [
+    vim
+    wget
+    htop
+    amnezia-vpn
+    mangohud  # for showing fps
+  ];
 
   programs.firefox.enable = true;
   # Some programs need SUID wrappers, can be configured further or are
@@ -41,12 +56,48 @@
   #   enableSSHSupport = true;
   # };
 
-  # List packages installed in system profile.
-  # You can use https://search.nixos.org/ to find more packages (and options).
-  environment.systemPackages = with pkgs; [
-    vim
-    wget
+  programs.amnezia-vpn = {
+    enable = true;
+  };
+
+  programs.throne = {
+    enable = true;
+    tunMode.enable = true; # Enables necessary root wrappers/capabilities for TUN mode
+  };
+
+  # system fonts:
+  fonts.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-color-emoji
   ];
+
+  # GPU SETTINGS:
+  # 1. Enable hardware acceleration (graphics) for 32-bit apps (Steam games)
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
+  # 2. Enable the Steam program module
+  services.xserver.enable = true;  # neccessary for steam
+  hardware.steam-hardware.enable = true;
+  programs.steam = {
+    enable = true;
+    
+    # Open ports in the firewall for Steam Remote Play (Local Streaming)
+    remotePlay.openFirewall = true; 
+    
+    # Open ports in the firewall for Source Dedicated Server
+    dedicatedServer.openFirewall = false; 
+    
+    # Optimize game performance (Enables 'gamemode' integration if you use it)
+    extest.enable = true; 
+  };
+
+  # --- GENERAL ENV VARIABLES --- #
+  #environment.variables = {
+  #  # DISPLAY = "DP-1";
+  #};
 
   # --- LIST SERVICES THAT YOU WANT TO ENABLE --- #
 
