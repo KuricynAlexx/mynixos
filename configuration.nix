@@ -10,7 +10,11 @@
     ./hardware-configuration.nix
     ./modules/system-pkgs.nix
     ./modules/users.nix
-    ./modules/environments/kde-plasma.nix
+    # ./modules/environments/kde-plasma.nix
+    # ./modules/environments/hyprland.nix
+    ./modules/environments/niri.nix
+    ./modules/periphery/general.nix
+    ./modules/periphery/gpu.nix
     ];
 
   # --- THIS HOST SYSTEM SETTING --- #

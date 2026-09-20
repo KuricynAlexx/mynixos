@@ -10,6 +10,11 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+   #plasma-manager = {
+   #  url = "github:nix-community/plasma-manager";
+   #  inputs.nixpkgs.follows = "nixpkgs";
+   #  inputs.home-manager.follows = "home-manager";
+   #};
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs: {
@@ -28,6 +33,7 @@
             home-manager.useUserPackages = true;
             
             # Настройки Home Manager для вашего пользователя
+            # home-manager.extraSpecialArgs = { inherit inputs; };
             home-manager.users.alexthesnore = import ./home.nix;
           }
         ];

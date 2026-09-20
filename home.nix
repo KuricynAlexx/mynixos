@@ -1,8 +1,11 @@
 { config, pkgs, ... }: {
+  # before plasma declare third-party widgets which does not exist in nixos-pkgs officially:
   imports =
     [
     # ./modules/environments/kde-plasma.nix
     ./modules/periphery/desktop.nix
+    # inputs.plasma-manager.homeManagerModules.plasma-manager
+    # ./plasma.nix
     ];
 
   # gc for users programs
@@ -22,7 +25,14 @@
     # discord
     # vlc
     zed-editor
+    throne
+
+    # for gpu testing:
+    clinfo
+    vulkan-tools
+    mesa-demos  # renamed `glxinfo` pkg
   ];
+
 
   # 2. Сложные программы, которые мы хотим не просто установить, а сразу настроить
   programs.firefox = {
