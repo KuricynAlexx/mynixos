@@ -14,6 +14,29 @@
 
     # Use the WirePlumber session manager
     #wireplumber.enable = true;
+
+    # Swap the channels globally by forcing a re-map inside loopback
+    # maybe because of bad headphones, I dont know
+    # If it needs to swap left-right channels
+   #extraConfig.pipewire."99-swap-channels" = {
+   #  "context.modules" = [
+   #    {
+   #      name = "libpipewire-module-loopback";
+   #      args = {
+   #        "audio.position" = [ "FL" "FR" ];
+   #        "capture.props" = {
+   #          "media.class" = "Audio/Sink";
+   #          "node.name" = "swapped_stereo";
+   #          "node.description" = "Swapped Stereo Output";
+   #        };
+   #        "playback.props" = {
+   #          "audio.position" = [ "FR" "FL" ]; # <--- Reverses the map here
+   #          "node.target" = "my-default-sink"; # Paths directly to your hardware
+   #        };
+   #      };
+   #    }
+   #  ];
+   #};
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
