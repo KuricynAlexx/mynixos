@@ -2,7 +2,36 @@
 { config, pkgs, ... }:
 
 {
-  # Подключаем plasma-manager как модуль (предполагается, что flake настроен)
+# xdg.dataFile = {
+#   # 1. Установка CatWalkR (виджет с анимированным котиком)
+#   "plasma/plasmoids/com.github.catwalkr" = {
+#     source = pkgs.fetchzip {
+#       url = "https://github.com/BLADR-ONE/CatWalk-Enhanced-Plasmoid/releases/download/v1.3.0/org.kde.plasma.catwalkenhanced.zip";
+#       sha256 = "sha256:ccb65b81de7d3770ba2a83724e942aa9e1cdac1b79bd692dfb3bd638f67759b4";
+#     };
+#     recursive = true;
+#   };
+
+#   # 2. Установка KDE Control Station (панель управления в стиле macOS/iOS)
+#   "plasma/plasmoids/org.kde.plasma.controlstation" = {
+#     source = pkgs.fetchzip {
+#       url = "";
+#       sha256 = "";
+#     };
+#     recursive = true;
+#   };
+# };
+
+  home.packages = with pkgs; [
+    # plasma  
+    kdePackages.plasma-nm       # Управление сетью
+    kdePackages.plasma-pa       # Управление аудио
+    kdePackages.kdeconnect-kde  # Виджеты интеграции с телефоном
+    bibata-cursors
+  ];
+
+  # Зависимости, необходимые для корректной работы KDE Control Station
+  # plasma:
   programs.plasma = {
     enable = true;
     
@@ -18,12 +47,12 @@
       cursorTheme = "Bibata-Modern-Ice";
       iconTheme = "Yet-Another-Monochrome-Icon-Set";
       
-      # Кастомизация шрифтов
-      font = {
-        general = {
-          family = "Noto Sans";
-          pointSize = 10;
-        };
+    };
+    # Кастомизация шрифтов
+    fonts = {
+      general = {
+        family = "Noto Sans";
+        pointSize = 10;
       };
     };
 
@@ -44,12 +73,27 @@
         height = 32;
         alignment = "center";
         widgets = [
+          # standard widgets:
           "org.kde.plasma.kickoff"
-          "org.kde.plasma.systemmonitor" # Слева (как в оригинале)
+          {
+            name = "org.kde.plasma.systemmonitor";
+	    config = {
+              Appearance = {
+                # Задаем тип отображения (например, текстовый или график)
+                chartType = "org.kde.plasma.graphicsicalies"; 
+              };
+              Sensors = {
+                # Явно указываем, какие датчики опрашивать
+                totalCpuUsage = "cpu/all/usage";
+                memoryUsage = "mem/physical/used";
+              };
+            };
+          }
           "org.kde.plasma.appmenu"
-          "org.kde.plasma.panelspacer"   # Разделитель
-          "com.github.catwalkr"          # Виджет CatWalkR (если упакован в nix)
-          "org.kde.plasma.controlstation" # Control Station 
+          "org.kde.plasma.panelspacer"       # Разделитель
+          # third-party widgets:
+          # { name = "com.github.catwalkr"; }  # Виджет CatWalkR (если упакован в nix)
+          # { name = "org.kde.plasma.controlstation"; } # Control Station 
         ];
       }
       # Нижняя панель
@@ -68,12 +112,6 @@
     kscreenlocker.appearance.wallpaper = "/home/alexthesnore/Pictures/wallpapers/berserk_guts.png";
   };
 
-  # Системные пакеты пользователя, необходимые для "райса"
-  home.packages = with pkgs; [
-    bibata-cursors
-    # Дополнительные виджеты и плагины KDE можно устанавливать напрямую,
-    # если они упакованы в nixpkgs, либо скачивать через home.file
-  ];
 
   # Light / Dark themes
   systemd.user.services.switch-to-dark-theme = {
