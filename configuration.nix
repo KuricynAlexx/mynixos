@@ -14,6 +14,7 @@
     # ./modules/environments/hyprland.nix
     ./modules/environments/niri.nix
     ./modules/periphery/general.nix
+    ./modules/periphery/mouse.nix
     ./modules/periphery/gpu.nix
     ];
 
