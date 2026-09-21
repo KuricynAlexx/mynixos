@@ -96,13 +96,14 @@
 
   # --- GENERAL ENV VARIABLES --- #
   #environment.variables = {
-  #  # DISPLAY = "DP-1";
   #};
 
   # --- LIST SERVICES THAT YOU WANT TO ENABLE --- #
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
