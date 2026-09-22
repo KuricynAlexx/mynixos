@@ -91,7 +91,10 @@
     dedicatedServer.openFirewall = false; 
     
     # Optimize game performance (Enables 'gamemode' integration if you use it)
-    extest.enable = true; 
+    extest.enable = true;
+
+    # to fix flickers
+    gamescopeSession.enable = true;
   };
 
   # --- GENERAL ENV VARIABLES --- #
